@@ -664,6 +664,23 @@ RCT_EXPORT_METHOD(getNativeProps:(nonnull NSNumber *)reactTag resolver:(RCTPromi
      }];
 }
 
+RCT_EXPORT_METHOD(init:(nonnull NSNumber *)reactTag)
+{
+    [self.bridge.uiManager addUIBlock:
+     ^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, KeyboardTrackingView *> *viewRegistry) {
+
+         KeyboardTrackingView *view = viewRegistry[reactTag];
+         if (!view || ![view isKindOfClass:[KeyboardTrackingView class]]) {
+             RCTLogError(@"Error: cannot find KeyboardTrackingView with tag #%@", reactTag);
+             return;
+         }
+         view.scrollViewToManage = nil;
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [view initializeAccessoryViewsAndHandleInsets];
+         });
+     }];
+}
+
 RCT_EXPORT_METHOD(scrollToStart:(nonnull NSNumber *)reactTag)
 {
     [self.bridge.uiManager addUIBlock:

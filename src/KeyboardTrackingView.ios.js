@@ -25,6 +25,12 @@ export default class KeyboardTrackingView extends PureComponent {
     return {};
   }
 
+  init() {
+      if (this.ref && KeyboardTrackingViewManager && KeyboardTrackingViewManager.init) {
+          KeyboardTrackingViewManager.init(ReactNative.findNodeHandle(this.ref));
+      }
+  }
+
   scrollToStart() {
     if (this.ref && KeyboardTrackingViewManager && KeyboardTrackingViewManager.scrollToStart) {
       KeyboardTrackingViewManager.scrollToStart(ReactNative.findNodeHandle(this.ref));
